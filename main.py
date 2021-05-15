@@ -206,7 +206,7 @@ if __name__ == '__main__':
             suggestion = ""
             if len(get_words_list(result[3])) == 2 and len(get_words_list(result[1])) > 3:
                 suggestion = get_words_list(result[3])[0]
-            elif len(get_words_list(result[3]) == 1):
+            elif len(get_words_list(result[3])) == 1:
                 suggestion = get_words_list(result[3])[0]
             else:
                 suggested_words = get_words_list(result[1])
