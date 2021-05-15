@@ -8,7 +8,7 @@ import re
 def hamming_dist(seq1, seq2):
     count = 0
     min_length = min(len(seq1), len(seq2))
-    if abs(len(seq1)-len(seq2)) > 2:
+    if abs(len(seq1) - len(seq2)) > 2:
         return 1000
     for i in range(0, min_length):
         if seq1[i] != seq2[i]:
@@ -26,17 +26,17 @@ def levenshtein(seq1, seq2):
         matrix[0, y] = y
     for x in range(1, size_x):
         for y in range(1, size_y):
-            if seq1[x-1] == seq2[y-1]:
+            if seq1[x - 1] == seq2[y - 1]:
                 matrix[x, y] = min(
-                    matrix[x-1, y] + 1,
-                    matrix[x-1, y-1],
-                    matrix[x, y-1] + 1
+                    matrix[x - 1, y] + 1,
+                    matrix[x - 1, y - 1],
+                    matrix[x, y - 1] + 1
                 )
             else:
                 matrix[x, y] = min(
-                    matrix[x-1, y] + 1,
-                    matrix[x-1, y-1] + 1,
-                    matrix[x, y-1] + 1
+                    matrix[x - 1, y] + 1,
+                    matrix[x - 1, y - 1] + 1,
+                    matrix[x, y - 1] + 1
                 )
     return matrix[size_x - 1, size_y - 1]
 
@@ -154,16 +154,20 @@ def get_metrics(word_correct, result0, result1, algo_name):
 if __name__ == '__main__':
     set_of_words = set()
     set_of_words = set_of_words | split_text('voina-i-mir.txt')
-    set_of_words = set_of_words | split_text('Enciklopediya.txt')
-    set_of_words = set_of_words | split_text('wiki.txt')
+    # set_of_words = set_of_words | split_text('Enciklopediya.txt')
+    # set_of_words = set_of_words | split_text('wiki.txt')
     words_correct = ["блокнот", "восторжествовал", "галерея", "гарантировать", "гостиница", "дисциплина",
-                      "достопримечательность", "изобразительный", "искусный", "искусственный", "непримиримый",
-                      "обаяние", "обоняние", "обязанность", "официальный", "организация", "оптимист", "пессимизм"]
-    # words_error = ["блакнот", "всторжевствовал", "галирея", "гаранировать", "гастинеца", "дестциплина",
-    #                 "дастопримечетелность", "исобразительний", "изкусний", "искуственый", "непремеримый",
-    #                 "абаяниё", "обаняние", "обязаностъ", "офисиалъный", "органызацыя", "аптымист", "песимизм"]
+                     "достопримечательность", "изобразительный", "искусный", "искусственный", "непримиримый",
+                     "обаяние", "обоняние", "обязанность", "официальный", "организация", "оптимист", "пессимизм"]
     words_error = ["блакнот", "всторжевствовал", "галирея", "гаранировать", "гастинеца", "дестциплина",
-                     "дастопримечетелность", "исобразительний", "изкусний", "искуственый", "непремеримый"]
+                    "дастопримечетелность", "исобразительний", "изкусний", "искуственый", "непремеримый",
+                    "абаяниё", "обаняние", "обязаностъ", "офисиалъный", "органызацыя", "аптымист", "песимизм"]
+
+    # words_correct = ["окровавленною", "адъютант", "разговор", "неизвестному", "кошелек", "неприступная",
+    #                  "бессонную", "старательно", "защищает", "господа", "беспорядок"]
+    # words_error = ["акрававленою", "адьютанд", "розговор", "неизвесному", "кашелек", "непреступная",
+    #                  "бесоную", "старателъно", "защишает", "госпада", "безпорядок"]
+
     top = 10
     hamming_flags_best = []
     levenshtein_flags_best = []
@@ -190,15 +194,19 @@ if __name__ == '__main__':
         else:
             print(f"Слово \"{word}\" ошибочное")
             print(f"Правильное слово: \"{words_correct[i]}\"")
-            hamming_flag_best, hamming_flag_top, hamming_best_amount = get_metrics(words_correct[i], result[0], result[1], "Hamming")
+            hamming_flag_best, hamming_flag_top, hamming_best_amount = get_metrics(words_correct[i], result[0],
+                                                                                   result[1], "Hamming")
             hamming_flags_best.append(hamming_flag_best)
             hamming_flags_top.append(hamming_flag_top)
             hamming_avg.append(hamming_best_amount)
-            levenshtein_flag_best, levenshtein_flag_top, levenshtein_best_amount = get_metrics(words_correct[i], result[2], result[3], "Levenshtein")
+            levenshtein_flag_best, levenshtein_flag_top, levenshtein_best_amount = get_metrics(words_correct[i],
+                                                                                               result[2], result[3],
+                                                                                               "Levenshtein")
             levenshtein_flags_best.append(levenshtein_flag_best)
             levenshtein_flags_top.append(levenshtein_flag_top)
             levenshtein_avg.append(levenshtein_best_amount)
-            jaccard_flag_best, jaccard_flag_top, jaccard_best_amount = get_metrics(words_correct[i], result[4], result[5], "Jaccard")
+            jaccard_flag_best, jaccard_flag_top, jaccard_best_amount = get_metrics(words_correct[i], result[4],
+                                                                                   result[5], "Jaccard")
             jaccard_flags_best.append(jaccard_flag_best)
             jaccard_flags_top.append(jaccard_flag_best)
             jaccard_avg.append(jaccard_best_amount)
